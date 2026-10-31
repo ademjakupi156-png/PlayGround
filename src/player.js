@@ -132,7 +132,11 @@ export class Player {
 
   requestLock() {
     if (this.isTouch) return;
-    try { this.canvas.requestPointerLock?.(); } catch { /* ignore */ }
+    try {
+      // newer browsers return a promise that rejects when the document isn't focused
+      const p = this.canvas.requestPointerLock?.();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    } catch { /* ignore */ }
   }
 
   look(dx, dy) { this.addLook(dx, dy); }

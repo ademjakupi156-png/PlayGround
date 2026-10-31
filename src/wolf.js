@@ -207,7 +207,7 @@ export function buildScareHead() {
   for (const sgn of [-1, 1]) {
     const cheek = new THREE.Mesh(new THREE.SphereGeometry(0.25, 10, 8), furMid);
     cheek.position.set(sgn * 0.38, -0.04, 0.38);
-    cheek.scale.set(0.78, 0.7, 1.25);
+    cheek.scale.set(0.68, 0.7, 1.25);
     head.add(cheek);
     const hollow = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 7), mat('#080706'));
     hollow.position.set(sgn * 0.36, -0.13, 0.52);
@@ -217,15 +217,14 @@ export function buildScareHead() {
 
   // heavy angry brow
   for (const sgn of [-1, 1]) {
-    const brow = new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.4, 4), furDark);
-    brow.scale.set(1, 1, 0.7);
-    brow.position.set(sgn * 0.23, 0.4, 0.63);
-    brow.rotation.set(Math.PI / 2.1, 0, sgn * 1.45);
+    const brow = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 8), furDark);
+    brow.position.set(sgn * 0.235, 0.25, 0.67);
+    brow.scale.set(1.35, 0.42, 0.85);
+    brow.rotation.z = sgn * 0.3;
     head.add(brow);
-    const browTuft = furCone(0.09, 0.3, '#1d1a16', 5);
-    browTuft.position.set(sgn * 0.33, 0.42, 0.52);
-    browTuft.rotation.set(0.4, 0, -sgn * 1.2);
-    head.add(browTuft);
+    const browTuft = furCone(0.05, 0.18, '#0f0d0b', 5);
+    browTuft.position.set(sgn * 0.3, 0.36, 0.58);
+    browTuft.rotation.set(0.35, 0, -sgn * 0.9);
   }
 
   // sunken sockets + narrow eyes
@@ -259,107 +258,96 @@ export function buildScareHead() {
   }
 
   // muzzle — broad at the root, narrow at the nose
-  const muzzle = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.36, 0.82, 7, 2), furMid);
+  const muzzle = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.31, 1.02, 7, 2), furMid);
   muzzle.rotation.x = Math.PI / 2;
-  muzzle.position.set(0, -0.01, 0.98);
-  muzzle.scale.set(1.12, 1, 0.92);
+  muzzle.position.set(0, -0.02, 1.08);
+  muzzle.scale.set(1.04, 1, 0.92);
   head.add(muzzle);
-  const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.15, 0.72), furDark);
-  bridge.position.set(0, 0.21, 0.98);
-  bridge.rotation.x = -0.05;
+  const bridge = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.16, 0.92, 5), furMid);
+  bridge.rotation.x = Math.PI / 2 - 0.06;
+  bridge.position.set(0, 0.17, 1.08);
+  bridge.scale.set(1.2, 1, 0.6);
   head.add(bridge);
-  const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.06, 0.6), furLight);
-  ridge.position.set(0, 0.29, 0.96);
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.03, 0.66), furLight);
+  ridge.position.set(0, 0.235, 1.05);
+  ridge.rotation.x = -0.03;
   head.add(ridge);
 
   // nose
-  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.108, 16, 12), mat('#0c0a09', { roughness: 0.8, metalness: 0.0, flatShading: false }));
-  nose.position.set(0, 0.055, 1.41);
-  nose.scale.set(1.06, 0.86, 0.7);
+  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.092, 16, 12), mat('#17120f', { roughness: 0.42, metalness: 0.05, flatShading: false }));
+  nose.position.set(0, -0.015, 1.565);
+  nose.scale.set(1.05, 0.78, 0.78);
   head.add(nose);
   for (const sgn of [-1, 1]) {
-    const nostril = new THREE.Mesh(new THREE.SphereGeometry(0.02, 6, 5), mat('#000000'));
-    nostril.position.set(sgn * 0.04, 0.025, 1.49);
-    nostril.scale.set(0.85, 1.2, 0.55);
+    const nostril = new THREE.Mesh(new THREE.SphereGeometry(0.017, 6, 5), mat('#000000'));
+    nostril.position.set(sgn * 0.035, -0.03, 1.63);
+    nostril.scale.set(0.95, 1.15, 0.5);
     head.add(nostril);
   }
+  const philtrum = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.07, 0.01), mat('#000000'));
+  philtrum.position.set(0, -0.08, 1.625);
+  head.add(philtrum);
 
   // snout front — separates the eyes from the mouth
   const snout = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 10), furMid);
-  snout.position.set(0, -0.09, 1.2);
-  snout.scale.set(0.96, 0.62, 0.72);
+  snout.position.set(0, -0.11, 1.34);
+  snout.scale.set(0.82, 0.58, 0.82);
   head.add(snout);
 
   // mouth cavity — lower and narrower so it reads as a mouth, not a second face
   const cavity = new THREE.Mesh(new THREE.SphereGeometry(0.32, 14, 12), mat('#210708', { roughness: 1 }));
-  cavity.position.set(0, -0.54, 0.94);
-  cavity.scale.set(0.96, 0.6, 0.6);
+  cavity.position.set(0, -0.46, 0.88);
+  cavity.scale.set(1.0, 0.62, 0.66);
   head.add(cavity);
   const palate = new THREE.Mesh(new THREE.SphereGeometry(0.25, 10, 8), mat('#2b0b0c', { roughness: 1 }));
-  palate.position.set(0, -0.42, 1.02);
-  palate.scale.set(1.0, 0.34, 0.48);
+  palate.position.set(0, -0.3, 1.0);
+  palate.scale.set(0.96, 0.28, 0.5);
   head.add(palate);
 
   // upper gum + a row of irregular teeth hanging in front of the cavity
   const upperGum = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.035, 0.1), gum);
-  upperGum.position.set(0, -0.285, 1.19);
+  upperGum.position.set(0, -0.25, 1.2);
   upperGum.rotation.x = 0.12;
   head.add(upperGum);
   const toothRnd = mulberry32(1337);
-  for (let i = 0; i < 6; i++) {
-    const x = (i - 2.5) * 0.085;
-    const canine = i === 0 || i === 5;
-    const len = canine ? 0.27 : 0.09 + toothRnd() * 0.09;
-    const rad = canine ? 0.042 : 0.026 + toothRnd() * 0.01;
+  const upperLens = [0.21, 0.12, 0.09, 0.12, 0.21];
+  for (let i = 0; i < 5; i++) {
+    const x = (i - 2) * 0.1;
+    const canine = i === 0 || i === 4;
+    const len = upperLens[i] + (toothRnd() - 0.5) * 0.02;
+    const rad = canine ? 0.036 : 0.022 + toothRnd() * 0.007;
     const t = new THREE.Mesh(new THREE.ConeGeometry(rad, len, 5), toothMat);
-    t.position.set(x, -0.33 - len / 2, 1.24 + toothRnd() * 0.02);
+    t.position.set(x, -0.27 - len / 2, 1.28 + toothRnd() * 0.015);
     t.rotation.x = Math.PI;
-    t.rotation.z = (toothRnd() - 0.5) * 0.22;
+    t.rotation.z = (toothRnd() - 0.5) * 0.16;
     head.add(t);
   }
 
-  // lower jaw — hinged at the back, dropped wide open
+  // lower jaw — hinged at the back of the mouth, not under the chin
   const jaw = new THREE.Group();
-  jaw.position.set(0, -0.52, 0.3);
+  jaw.position.set(0, -0.28, 0.44);
   head.add(jaw);
-  const jawShape = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 9), furMid);
-  jawShape.position.set(0, -0.08, 0.46);
-  jawShape.scale.set(0.9, 0.42, 1.55);
-  jaw.add(jawShape);
-  const chin = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 8), furMid);
-  chin.position.set(0, -0.04, 0.82);
-  chin.scale.set(0.86, 0.5, 0.8);
-  jaw.add(chin);
-  for (const sgn of [-1, 1]) {
-    const jowl = new THREE.Mesh(new THREE.SphereGeometry(0.16, 8, 7), furDark);
-    jowl.position.set(sgn * 0.25, -0.02, 0.34);
-    jowl.scale.set(0.8, 0.9, 1.2);
-    jaw.add(jowl);
-  }
-  const tongue = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 8), tongueMat);
-  tongue.position.set(0, 0.09, 0.34);
-  tongue.scale.set(0.75, 0.24, 1.15);
+  const tongue = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 8), tongueMat);
+  tongue.position.set(0, 0.06, 0.5);
+  tongue.scale.set(0.95, 0.24, 1.45);
   jaw.add(tongue);
-  // lower teeth point up, set along the front of the jaw
-  const lowerGum = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.05, 0.14), gum);
-  lowerGum.position.set(0, 0.03, 0.8);
-  jaw.add(lowerGum);
-  for (let i = 0; i < 6; i++) {
-    const x = (i - 2.5) * 0.078;
-    const canine = i === 0 || i === 5;
-    const len = canine ? 0.25 : 0.09 + toothRnd() * 0.08;
-    const t = new THREE.Mesh(new THREE.ConeGeometry(canine ? 0.04 : 0.024, len, 5), toothMat);
-    t.position.set(x, 0.05 + len / 2, 0.82);
-    t.rotation.z = (toothRnd() - 0.5) * 0.2;
+  // lower fangs
+  for (let i = 0; i < 5; i++) {
+    const x = (i - 2) * 0.08;
+    const canine = i === 0 || i === 4;
+    const len = canine ? 0.18 : 0.08 + toothRnd() * 0.06;
+    const t = new THREE.Mesh(new THREE.ConeGeometry(canine ? 0.032 : 0.02, len, 5), toothMat);
+    t.position.set(x, 0.03 + len / 2, 0.7);
+    t.rotation.z = (toothRnd() - 0.5) * 0.18;
     jaw.add(t);
   }
   jaw.rotation.x = 0.02;
 
-  // lips / jowls framing the mouth and hiding the gum bar
+  // rounded mouth corners
   for (const sgn of [-1, 1]) {
-    const lip = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.15, 0.5), furMid);
-    lip.position.set(sgn * 0.28, -0.29, 1.05);
-    lip.rotation.set(0.12, sgn * 0.2, sgn * 0.08);
+    const lip = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 7), furMid);
+    lip.position.set(sgn * 0.27, -0.3, 1.12);
+    lip.scale.set(0.7, 0.8, 1.5);
     head.add(lip);
   }
 
@@ -379,13 +367,23 @@ export function buildScareHead() {
     head.add(inner);
   }
 
+  // neck and shoulder mass
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.56, 1.35, 10), furDark);
+  neck.position.set(0, -1.0, -0.28);
+  neck.rotation.x = 0.22;
+  head.add(neck);
+  const ruff = new THREE.Mesh(new THREE.SphereGeometry(0.44, 12, 9), furMid);
+  ruff.position.set(0, -0.62, -0.22);
+  ruff.scale.set(1.05, 0.55, 0.85);
+  head.add(ruff);
+
   // shaggy silhouette — bristles around cheeks, crown and throat
   const bristleRnd = mulberry32(77);
   for (let i = 0; i < 9; i++) {
     const a = (i / 9) * TAU;
     const r = 0.52 + bristleRnd() * 0.16;
-    const c = furCone(0.04 + bristleRnd() * 0.03, 0.09 + bristleRnd() * 0.12, i % 4 ? '#0a0908' : '#1c1813', 4);
-    c.position.set(Math.cos(a) * r, Math.sin(a) * r * 0.72 + 0.13, -0.12 - bristleRnd() * 0.2);
+    const c = furCone(0.035 + bristleRnd() * 0.025, 0.07 + bristleRnd() * 0.09, i % 4 ? '#0a0908' : '#1c1813', 4);
+    c.position.set(Math.cos(a) * r, Math.sin(a) * r * 0.72 + 0.13, -0.26 - bristleRnd() * 0.22);
     c.rotation.set(bristleRnd() * 0.6 - 0.3, bristleRnd() * TAU, Math.PI / 2 + bristleRnd() * 0.5 - 0.3);
     head.add(c);
   }
@@ -912,7 +910,7 @@ export class Jumpscare {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('#030202');
     this.camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.05, 40);
-    this.camera.position.set(0, 0.18, 9.0);
+    this.camera.position.set(0, 0.18, 8.2);
     this.camera.lookAt(0, 0.02, 0);
 
     this.head = buildScareHead();
@@ -923,19 +921,22 @@ export class Jumpscare {
     this.jaw.rotation.x = 0.02;
 
     // stage lights — hard key from the front, sickly red rim behind
-    const key = new THREE.PointLight('#fff0c8', 34, 16, 1.35);
+    const key = new THREE.PointLight('#fff0c8', 34, 17, 1.3);
     key.position.set(2.1, 1.9, 5.6);
     this.scene.add(key);
-    const key2 = new THREE.PointLight('#c8dcff', 12, 13, 1.45);
+    const key2 = new THREE.PointLight('#cdd9e8', 18, 14, 1.4);
     key2.position.set(-2.4, 0.9, 4.7);
     this.scene.add(key2);
-    const rim = new THREE.PointLight('#5e0b07', 90, 18, 1.45);
-    rim.position.set(-1.8, 1.4, -3.2);
+    const rim = new THREE.PointLight('#5e0b07', 64, 18, 1.45);
+    rim.position.set(-2.7, 1.6, -4.0);
     this.scene.add(rim);
-    const fill = new THREE.PointLight('#8fa88a', 8, 9, 1.25);
+    const fill = new THREE.PointLight('#c9c2ab', 9, 9, 1.25);
     fill.position.set(-1.6, -1.6, 4.2);
     this.scene.add(fill);
     this.scene.add(new THREE.AmbientLight('#1e0f0c', 0.22));
+    this.under = new THREE.PointLight('#5e1a0d', 5, 7, 1.5);
+    this.under.position.set(0, -1.4, 2.4);
+    this.scene.add(this.under);
 
     const eyeGlow = glowTexture();
     this.sprites = [];
@@ -966,7 +967,7 @@ export class Jumpscare {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     // portrait phones crop hard with a long lens — pull the camera back
     const portrait = this.camera.aspect < 0.85;
-    this.camera.position.z = portrait ? 12.2 : 9.0;
+    this.camera.position.z = portrait ? 12.2 : 8.2;
     this.yawBase = portrait ? 0.03 : 0.09;
     this.camera.updateProjectionMatrix();
   }
@@ -980,7 +981,7 @@ export class Jumpscare {
     this.head.position.set(0, 0.02, z);
     this.head.rotation.set(0, this.yawBase, -0.045);
     this.head.scale.setScalar(short ? 2.25 : 2.15);
-    this.jaw.rotation.x = short ? 0.7 : 0.03;
+    this.jaw.rotation.x = short ? 0.42 : 0.1;
     this.updateCameraAspect();
     this.audio?.jumpscare();
   }
@@ -1003,21 +1004,21 @@ export class Jumpscare {
     if (t < lungeEnd) {
       const k = t / lungeEnd;
       z = lerp(short ? 1.2 : -2.0, 2.55, Math.pow(k, 0.55));
-      jaw = lerp(0.25, 1.15, k);
+      jaw = lerp(0.1, 0.48, k);
       shake = 0.025;
     } else if (t < recoilEnd) {
       const k = (t - lungeEnd) / (recoilEnd - lungeEnd);
       z = lerp(2.55, 2.36, Math.sin(k * Math.PI) * 0.5);
-      jaw = 1.05 + Math.sin(k * Math.PI) * 0.2;
+      jaw = 0.45 + Math.sin(k * Math.PI) * 0.1;
       shake = 0.06;
     } else if (t < holdEnd) {
       z = 2.5 + Math.sin(t * 47) * 0.03;
-      jaw = 1.22;
+      jaw = 0.4;
       shake = 0.07;
     } else {
       const k = clamp((t - holdEnd) / (this.duration - holdEnd), 0, 1);
       z = lerp(2.5, -3.0, k * k);
-      jaw = 1.22 * (1 - k * 0.3);
+      jaw = 0.4 * (1 - k * 0.3);
       shake = 0.025;
     }
 
@@ -1036,7 +1037,7 @@ export class Jumpscare {
     });
     this.key.intensity = 34 + Math.sin(t * 61) * 8;
     this.key2.intensity = 12 + Math.sin(t * 37) * 3;
-    this.rim.intensity = 90 + Math.sin(t * 23) * 22;
+    this.rim.intensity = 64 + Math.sin(t * 23) * 16;
     // aim just below the eyeline so the open mouth and teeth stay in frame
     this.camera.position.x = Math.sin(t * 83) * 0.05;
     this.camera.position.y = 0.18 + Math.cos(t * 67) * 0.04;
