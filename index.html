@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#050806" />
+<title>THE HOLLOW — 20 Pieces</title>
+<meta name="description" content="A horror game. Your car is in pieces. Something in the woods is awake. Find all twenty parts before it finds you." />
+<link rel="stylesheet" href="./styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060805'/%3E%3Cpath d='M8 22 16 6l8 16-8-4z' fill='%23d9e6b8'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<div id="boot" class="boot">
+  <div class="boot-inner">
+    <div class="boot-mark">◈</div>
+    <div class="boot-text">ENTERING THE WOODS</div>
+  </div>
+</div>
+
+<!-- ===================== 3D VIEWPORT ===================== -->
+<canvas id="scene" aria-label="First person forest"></canvas>
+
+<div id="fx-vignette" class="fx-vignette"></div>
+<div id="fx-danger" class="fx-danger"></div>
+<div id="fx-flash" class="fx-flash"></div>
+<div id="fx-grain" class="fx-grain"></div>
+<div id="fx-scan" class="fx-scan"></div>
+<div id="fx-black" class="fx-black"></div>
+
+<!-- ===================== TITLE ===================== -->
+<section id="title" class="screen title-screen">
+  <div class="title-top">
+    <span class="eyebrow"><i></i> A SHORT HORROR IN THE WOODS</span>
+    <span class="title-top-right">HEADPHONES RECOMMENDED</span>
+  </div>
+
+  <div class="title-main">
+    <div class="kicker">NIGHT 01 &nbsp;·&nbsp; 11:47 PM &nbsp;·&nbsp; 40 MILES FROM ANYWHERE</div>
+    <h1 class="title-word">THE<br><em>HOLLOW</em></h1>
+    <p class="title-sub">Twenty pieces of your car are scattered in these trees.<br>You are not alone in them.</p>
+    <div class="title-actions">
+      <button id="btn-play" class="btn btn-primary" type="button"><span>Play</span></button>
+      <button id="btn-howto" class="btn btn-ghost" type="button">How to play</button>
+    </div>
+    <div class="title-meta">
+      <span>STALKING &nbsp;·&nbsp; SURVIVAL &nbsp;·&nbsp; JUMPSCARES</span>
+      <span id="title-best">—</span>
+    </div>
+  </div>
+
+  <div class="title-foot">
+    <div class="title-controls">
+      <span><b>WASD</b> move</span>
+      <span><b>MOUSE</b> look</span>
+      <span><b>SHIFT</b> sprint</span>
+      <span><b>F</b> torch</span>
+      <span><b>Q</b> sense</span>
+    </div>
+    <div class="warning">⚠ Contains flashing imagery, loud sounds and intense jumpscares.</div>
+  </div>
+</section>
+
+<!-- ===================== HOW TO PLAY ===================== -->
+<section id="howto" class="screen modal-screen hidden">
+  <div class="modal">
+    <div class="modal-eyebrow">SURVIVAL NOTES</div>
+    <h2>HOW TO <em>NOT</em> DIE</h2>
+    <div class="howto-grid">
+      <div><span class="num">01</span><h3>Find the pieces</h3><p>Your car broke apart on impact. Twenty parts are glinting somewhere in the fog. Walk close to take them.</p></div>
+      <div><span class="num">02</span><h3>It hears you</h3><p>Sprinting and torchlight pull it closer. Walking is quiet. Standing still in the dark is quieter.</p></div>
+      <div><span class="num">03</span><h3>Don't stare</h3><p>If you see its eyes, keep moving. Shining the torch in its face makes it hesitate — but it will remember.</p></div>
+      <div><span class="num">04</span><h3>Rebuild and run</h3><p>When all twenty pieces are found, return to the wreck. The engine still turns. Probably.</p></div>
+    </div>
+    <div class="howto-keys">
+      <span><b>WASD / ARROWS</b> Walk</span>
+      <span><b>SHIFT</b> Sprint (stamina)</span>
+      <span><b>CTRL</b> Crouch (quiet)</span>
+      <span><b>F</b> Torch (battery)</span>
+      <span><b>Q</b> Sense nearest part</span>
+      <span><b>ESC</b> Pause</span>
+    </div>
+    <button id="btn-howto-close" class="btn btn-primary" type="button"><span>Back</span></button>
+  </div>
+</section>
+
+<!-- ===================== CINEMATIC CAPTION ===================== -->
+<div id="cine" class="cine hidden">
+  <div class="cine-rule"></div>
+  <div class="cine-loc">NIGHT 01 &nbsp;·&nbsp; 11:47 PM</div>
+  <div class="cine-line">Forty miles from anywhere. The road should have been empty.</div>
+  <div class="cine-skip" id="cine-skip">PRESS SPACE TO SKIP</div>
+</div>
+
+<!-- ===================== HUD ===================== -->
+<section id="hud" class="hud hidden">
+  <div class="hud-topleft">
+    <div class="hud-objective" id="objective">FIND THE TWENTY PIECES OF YOUR CAR</div>
+    <div class="parts">
+      <div class="parts-label"><span>CAR PARTS</span><strong><b id="parts-count">00</b> / 20</strong></div>
+      <div class="parts-pips" id="parts-pips"></div>
+    </div>
+  </div>
+
+  <div class="hud-topright">
+    <button id="btn-pause" class="icon-btn" type="button" aria-label="Pause">II</button>
+  </div>
+
+  <div class="reticle" id="reticle"><span></span></div>
+
+  <div class="hud-bottomleft">
+    <div class="meter">
+      <div class="meter-top"><span>STAMINA</span><span id="stamina-pct">100</span></div>
+      <div class="meter-track"><div class="meter-fill stamina" id="stamina-fill"></div></div>
+    </div>
+    <div class="meter">
+      <div class="meter-top"><span>TORCH</span><span id="torch-pct">100</span></div>
+      <div class="meter-track"><div class="meter-fill torch" id="torch-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="compass hidden" id="compass">
+    <div class="compass-arrow" id="compass-arrow"></div>
+    <div class="compass-label" id="compass-label">NEAREST PIECE</div>
+  </div>
+
+  <div class="subtitle" id="subtitle"></div>
+
+  <div class="hud-hint" id="hud-hint">
+    <span><b>SHIFT</b> sprint</span><span><b>F</b> torch</span><span><b>Q</b> sense</span>
+  </div>
+
+  <div class="danger-word" id="danger-word">RUN.</div>
+
+  <div class="pickup-card hidden" id="pickup-card">
+    <div class="pickup-line"></div>
+    <div class="pickup-name" id="pickup-name">WHEEL</div>
+    <div class="pickup-count" id="pickup-count">01 / 20 RECOVERED</div>
+  </div>
+</section>
+
+<!-- ===================== MOBILE CONTROLS ===================== -->
+<section id="touch" class="touch hidden">
+  <div class="stick-zone" id="stick-zone"><div class="stick-base"><div class="stick-knob" id="stick-knob"></div></div></div>
+  <div class="look-zone" id="look-zone"></div>
+  <div class="touch-buttons">
+    <button id="btn-sense" class="round-btn" type="button">SENSE</button>
+    <button id="btn-touch-torch" class="round-btn" type="button">TORCH</button>
+    <button id="btn-sprint" class="round-btn round-big" type="button">RUN</button>
+  </div>
+</section>
+
+<!-- ===================== PAUSE ===================== -->
+<section id="pause" class="screen modal-screen hidden">
+  <div class="modal modal-small">
+    <div class="modal-eyebrow">THE WOODS WAIT</div>
+    <h2>PAUSED</h2>
+    <p class="modal-copy">It hasn't moved. It doesn't need to.</p>
+    <div class="modal-actions">
+      <button id="btn-resume" class="btn btn-primary" type="button"><span>Resume</span></button>
+      <button id="btn-quit" class="btn btn-ghost" type="button">Give up</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DEATH ===================== -->
+<section id="dead" class="screen death-screen hidden">
+  <div class="death-inner">
+    <div class="death-eyebrow">IT HEARD YOU</div>
+    <h2 class="death-title">YOU<br><em>DIED</em></h2>
+    <p id="death-flavor">The forest is very quiet now.</p>
+    <div class="death-stats">
+      <div><span>PIECES FOUND</span><b id="death-parts">00 / 20</b></div>
+      <div><span>TIME IN THE WOODS</span><b id="death-time">00:00</b></div>
+      <div><span>TIMES TAKEN</span><b id="death-count">01</b></div>
+    </div>
+    <button id="btn-retry" class="btn btn-primary" type="button"><span>Get up</span></button>
+    <p class="death-note">It drags you back. You keep what you found.</p>
+  </div>
+</section>
+
+<!-- ===================== ENDING ===================== -->
+<section id="ending" class="screen ending-screen hidden">
+  <div class="ending-inner">
+    <div class="ending-eyebrow">DAWN NEVER CAME</div>
+    <h2 class="ending-title">THE<br><em>HOLLOW</em></h2>
+    <p class="ending-copy" id="ending-copy">You fixed the car. You turned the key. And then you heard it breathing in the back seat.</p>
+    <div class="ending-stats">
+      <div><span>PIECES</span><b>20 / 20</b></div>
+      <div><span>TIME</span><b id="end-time">00:00</b></div>
+      <div><span>TIMES TAKEN</span><b id="end-deaths">0</b></div>
+    </div>
+    <button id="btn-again" class="btn btn-primary" type="button"><span>Drive again</span></button>
+    <p class="ending-note">Thank you for playing. The howling hasn't stopped.</p>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js" } }
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
