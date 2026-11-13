@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#101a36" />
+  <title>Steam × Windows — Pixel OS</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="desktop" class="desktop" aria-label="Virtual desktop">
+    <div class="wallpaper" aria-hidden="true"><div class="sky-glow"></div><div class="mountain mountain-back"></div><div class="mountain mountain-front"></div><div class="wallpaper-light"></div></div>
+    <section class="desktop-icons" aria-label="Desktop apps">
+      <button class="desktop-icon" data-app="steam"><span class="app-icon steam-icon">◉</span><span>Steam</span></button>
+      <button class="desktop-icon" data-app="blender"><span class="app-icon blender-icon">✿</span><span>Blender</span></button>
+      <button class="desktop-icon" data-app="browser"><span class="app-icon browser-icon"><b>G</b></span><span>Google</span></button>
+      <button class="desktop-icon" data-app="files"><span class="app-icon folder-icon">📁</span><span>File Explorer</span></button>
+      <button class="desktop-icon" data-app="recycle"><span class="app-icon recycle-icon">♻</span><span>Recycle Bin</span></button>
+    </section>
+    <div id="windows"></div>
+    <div id="toast" class="toast" role="status"></div>
+    <nav class="taskbar" aria-label="Taskbar">
+      <button class="start-button" id="startButton" aria-label="Start menu"><span class="windows-mark"><i></i><i></i><i></i><i></i></span></button>
+      <button class="taskbar-search" data-app="browser"><span>⌕</span><span>Search</span></button>
+      <div id="taskbarApps" class="taskbar-apps"></div>
+      <div class="taskbar-right"><span id="wifiIcon">◔</span><button id="soundToggle" aria-label="Mute sound effects" title="Sound effects on">🔊</button><span id="clock">9:41 AM<br><small>11/13/2026</small></span></div>
+    </nav>
+    <section id="startMenu" class="start-menu hidden">
+      <div class="start-search">⌕ <span>Search for apps, settings, and documents</span></div>
+      <div class="start-heading"><b>Pinned</b><span>All apps　›</span></div>
+      <div class="pinned-grid">
+        <button data-app="steam"><span class="app-icon steam-icon">◉</span>Steam</button><button data-app="blender"><span class="app-icon blender-icon">✿</span>Blender</button><button data-app="browser"><span class="app-icon browser-icon"><b>G</b></span>Google</button><button data-app="files"><span class="app-icon folder-icon">📁</span>File Explorer</button>
+      </div>
+      <div class="start-user">👤 <b>Player One</b><button id="powerButton">⏻</button></div>
+    </section>
+  </main>
+  <div id="dialogLayer"></div>
+  <script src="app.js"></script>
+</body>
+</html>
